@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -17,14 +17,16 @@
         android:id="@+id/result"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:gravity="right"/>
+        android:gravity="right"
+        android:layout_below="@id/expression"/>
 
     <GridView
         android:id="@+id/keyboard"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+
         android:numColumns="5"
         android:horizontalSpacing="5dp"
-        android:verticalSpacing="5dp"/>
-</LinearLayout>
+        android:verticalSpacing="10dp"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

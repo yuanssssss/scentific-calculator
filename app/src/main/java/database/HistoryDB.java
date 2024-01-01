@@ -6,10 +6,21 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class HistoryDB extends SQLiteOpenHelper {
     private Context context;
+    private static String DB_NAME="history";
+    private static int VERSION=1;
+    private static HistoryDB instance;
 
-    public HistoryDB(Context context)
+    private HistoryDB(Context context)
     {
-        super(context,"history",null,1);
+        super(context,DB_NAME,null,VERSION);
+    }
+    public static synchronized HistoryDB getInstance(Context context)
+    {
+        if (instance==null)
+        {
+            instance=new HistoryDB(context.getApplicationContext());
+        }
+        return instance;
     }
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {

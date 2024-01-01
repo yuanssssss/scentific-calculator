@@ -25,15 +25,23 @@ public class MainActivity extends AppCompatActivity {
     private GridAdapter gridAdapter;
     private SQLiteDatabase sqLiteDatabase;
     private HistoryDB historyDB;
-
-    protected  static   List<IconList>datas;
-
     private  int count;
+    private String expression;
+    private String result;
+    private TextView expTv;
+    private TextView resTv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         count=0;
+        names=new ArrayList<>();
+        expTv=(TextView) findViewById(R.id.expression);
+        resTv=(TextView) findViewById(R.id.result);
+        expTv.setText("");
+        resTv.setText("");
+        expression="";
+        result="";
         DBInit();
         GridViewInit();
 
@@ -56,34 +64,61 @@ public class MainActivity extends AppCompatActivity {
     private void GridViewInit()
     {
         gridView=(GridView) findViewById(R.id.keyboard);
-        names=new ArrayList<>();
-        for(int i=0;i<35;i++)names.add(i+"");
+        KeyboardInit();
         gridAdapter=new GridAdapter(this,names);
         gridView.setAdapter(gridAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if(i==34)
-                {
-                    TextView expTv=(TextView) findViewById(R.id.expression);
-                    TextView resTv=(TextView) findViewById(R.id.result);
-                    String expression;
-                    String result;
-                    if(expTv.getText()==null) expression="empty";
-                    else expression=expTv.getText().toString();
-                    if(resTv.getText()==null) result="empty";
-                    else result=resTv.getText().toString();
-                    AddRecord(count++,expression,result);
-                    //datas.add(new IconList(expression,result));
+                /*
+                if (expTv.getText()==null) {
+                    expTv.setText("");
                 }
+                if (resTv.getText()==null) {
+                    resTv.setText("");
+                }
+                */
+                if(i==34) {
+                    expression=expTv.getText().toString();
+                    result=resTv.getText().toString();
+                    AddRecord(count++,expression,result);
+                }
+                else if(i==3) {
+                    expression="";
+                }
+                else if (i==4) {
+                    if(expression.length()>1) expression=expression.substring(0,expression.length()-1);
+                    else expression="";
+                }
+                else if (i%5==0||i==6||i==7) {
+                    expression+=names.get(i);
+                    expression+="(";
+                }
+                else if (i==31) {
+                    
+                }
+                else {
+                    expression+=names.get(i);
+                }
+                expTv.setText(expression);
             }
         });
     }
 
     private void DBInit()
     {
-        historyDB=new HistoryDB(this);
-        sqLiteDatabase=historyDB.getReadableDatabase();
+        historyDB=HistoryDB.getInstance(this);
+        sqLiteDatabase=historyDB.getWritableDatabase();
+    }
+    private void KeyboardInit()
+    {
+        names.add("sin");   names.add("\u03c0"); names.add("e");  names.add("C"); names.add("del");
+        names.add("cos");   names.add("1/x");    names.add("|x|");names.add("%"); names.add("mod");
+        names.add("tan");   names.add("(");      names.add(")");  names.add("n!");names.add("/");
+        names.add("log");   names.add("7");      names.add("8");  names.add("9"); names.add("X");
+        names.add("ln");    names.add("4");      names.add("5");  names.add("6"); names.add("+");
+        names.add("^");     names.add("1");      names.add("2");  names.add("3"); names.add("-");
+        names.add("\u221a");names.add("+/-");    names.add("0");  names.add("."); names.add("=");
     }
     public void AddRecord(int id,String expression,String result)
     {
@@ -93,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
         values.put("result",result);
         sqLiteDatabase.insert("historylist",null,values);
     }
+
 
 
 }
