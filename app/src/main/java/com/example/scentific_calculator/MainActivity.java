@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         resTv.setText("");
         expression="";
         result="";
+        Calculator.initPriority();
         DBInit();
         GridViewInit();
 
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 */
                 if(i==34) {
                     expression=expTv.getText().toString();
+                    resTv.setText(Calculator.evaluatePostfixExpression(expression)+"");
                     result=resTv.getText().toString();
                     AddRecord(count++,expression,result);
                 }
@@ -115,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         names.add("sin");   names.add("\u03c0"); names.add("e");  names.add("C"); names.add("del");
         names.add("cos");   names.add("1/x");    names.add("|x|");names.add("%"); names.add("mod");
         names.add("tan");   names.add("(");      names.add(")");  names.add("n!");names.add("/");
-        names.add("log");   names.add("7");      names.add("8");  names.add("9"); names.add("X");
+        names.add("log");   names.add("7");      names.add("8");  names.add("9"); names.add("*");
         names.add("ln");    names.add("4");      names.add("5");  names.add("6"); names.add("+");
         names.add("^");     names.add("1");      names.add("2");  names.add("3"); names.add("-");
         names.add("\u221a");names.add("+/-");    names.add("0");  names.add("."); names.add("=");
